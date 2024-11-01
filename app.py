@@ -1,10 +1,11 @@
 import streamlit as st
 import openpyxl
 import io
+import os
 import time
 
 # Streamlit app title
-st.title("Excel Row keep and Delete App")
+st.title("Excel Row Deletion App")
 
 # Upload workbook1 (the main workbook)
 workbook1_file = st.file_uploader("Upload the main workbook (keyword test)", type=['xlsx'])
@@ -13,6 +14,10 @@ workbook1_file = st.file_uploader("Upload the main workbook (keyword test)", typ
 workbook2_file = st.file_uploader("Upload the workbook with words to delete and keep (Keep and delete)", type=['xlsx'])
 
 if workbook1_file and workbook2_file:
+    # Extract the input file name for naming the output file
+    workbook1_name = os.path.splitext(workbook1_file.name)[0]
+    output_filename = f"{workbook1_name}_updated.xlsx"
+    
     # Load the workbooks
     workbook1 = openpyxl.load_workbook(workbook1_file)
     workbook2 = openpyxl.load_workbook(workbook2_file)
@@ -64,7 +69,7 @@ if workbook1_file and workbook2_file:
         st.download_button(
             label="Download the updated workbook",
             data=output,
-            file_name="keyword_test_updated.xlsx",
+            file_name=output_filename,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 else:
